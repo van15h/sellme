@@ -1,8 +1,8 @@
-package com.dse.ms2;
+package com.dse.ms2.service;
 
 import com.dse.ms2.model.Advertisement;
-import com.dse.ms2.service.IRepository;
-import com.dse.ms2.service.InMemoryRepository;
+import com.dse.ms2.model.IRepository;
+import com.dse.ms2.model.InMemoryRepository;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +47,6 @@ public class MS2Controller {
     return gson.toJson(inMemoryRepository.getAdvertisements().get(id));
   }
 
-  public boolean checkToken(){return true;}
+  public boolean checkToken(String token){return true;}
 
 }

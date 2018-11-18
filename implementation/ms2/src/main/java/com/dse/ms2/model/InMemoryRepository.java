@@ -1,6 +1,5 @@
-package com.dse.ms2.service;
+package com.dse.ms2.model;
 
-import com.dse.ms2.model.Advertisement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class InMemoryRepository implements IRepository {
   }
 
   @Override
-  public void deleteAdvertisement(String advId) {
+  public void deleteAdvertisement(int advId) {
 
   }
 
