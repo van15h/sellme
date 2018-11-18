@@ -1,0 +1,14 @@
+{
+  "/api": {
+    "target": "http://10.101.104.13:8080/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/hello": {
+    "target": "http://10.101.104.5:8050/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}
