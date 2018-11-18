@@ -1,4 +1,4 @@
-package com.dse.sellme.model;
+package com.dse.ms2.model;
 
 public class Advertisement {
 

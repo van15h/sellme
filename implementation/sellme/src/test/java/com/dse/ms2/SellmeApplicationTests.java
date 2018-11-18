@@ -1,4 +1,4 @@
-package com.dse.sellme;
+package com.dse.ms2;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

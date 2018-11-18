@@ -1,8 +1,8 @@
-package com.dse.sellme;
+package com.dse.ms2;
 
-import com.dse.sellme.model.Advertisement;
-import com.dse.sellme.service.IRepository;
-import com.dse.sellme.service.InMemoryRepository;
+import com.dse.ms2.model.Advertisement;
+import com.dse.ms2.service.IRepository;
+import com.dse.ms2.service.InMemoryRepository;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
-public class SellmeController {
+public class MS2Controller {
 
   private IRepository inMemoryRepository;
-  Gson gson;
+  private Gson gson;
 
   @RequestMapping("/")
   public String index() {

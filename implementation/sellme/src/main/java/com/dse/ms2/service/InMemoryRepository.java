@@ -1,6 +1,6 @@
-package com.dse.sellme.service;
+package com.dse.ms2.service;
 
-import com.dse.sellme.model.Advertisement;
+import com.dse.ms2.model.Advertisement;
 import java.util.ArrayList;
 import java.util.List;
 

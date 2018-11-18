@@ -5,12 +5,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.dse</groupId>
-  <artifactId>sellme</artifactId>
+  <artifactId>ms2</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>sellme</name>
-  <description>Sellme ms2 implementation</description>
+  <name>ms2</name>
+  <description>MS2 implementation</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
