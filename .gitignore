@@ -16,6 +16,9 @@
 *.iml
 *.ipr
 
+### Generated ###
+/implementation/ms2/sellme/target
+
 ### NetBeans ###
 /nbproject/private/
 /build/
