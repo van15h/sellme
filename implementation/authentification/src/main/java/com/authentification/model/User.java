@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="users")
 
-public class Users {
+public class User {
 	
 	@Id
 	@Column(name="user_id")
@@ -25,12 +25,12 @@ public class Users {
 	
 
 		
-	public Users() 
+	public User()
 	{
 	  super();
 	}
 
-	public Users(int user_id, String email, String password, String name)
+	public User(int user_id, String email, String password, String name)
 	{
 		super();
 		this.user_id = user_id;
