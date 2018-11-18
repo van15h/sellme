@@ -16,8 +16,9 @@
 *.iml
 *.ipr
 
-### Generated ###
+### Compiled outputs or dependencies ###
 /implementation/ms2/sellme/target
+/implementation/ms4/sell-me-client/node_modules
 
 ### NetBeans ###
 /nbproject/private/
