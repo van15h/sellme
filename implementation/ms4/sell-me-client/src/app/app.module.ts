@@ -7,11 +7,14 @@ import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
 import {CommonModule} from '@angular/common';
 import {AuthenticationService} from './authentication.service';
+import {AdvertisementService} from './advertisement.service';
+import { AdvertisementListComponent } from './advertisement-list/advertisement-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    AdvertisementListComponent
   ],
   imports: [
     BrowserModule,
@@ -20,7 +23,10 @@ import {AuthenticationService} from './authentication.service';
     CommonModule,
     ReactiveFormsModule,
   ],
-  providers: [AuthenticationService],
+  providers: [
+    AuthenticationService,
+    AdvertisementService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,4 +9,13 @@
       <app-login></app-login>
     </div>
   </div>
+  <!--TODO include authentication logic-->
+  <div class="card">
+    <div class="card-header">
+      Advertisements
+    </div>
+    <div class="card-body">
+      <app-advertisement-list [advertisements]="advertisements | async"></app-advertisement-list>
+    </div>
+  </div>
 </div>

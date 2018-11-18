@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
-
-import {environment} from '../environments/environment';
 import {Observable} from 'rxjs/Observable';
+import {Advertisement} from './model/advertisement.model';
+import {AdvertisementService} from './advertisement.service';
 
 @Component({
   selector: 'app-root',
@@ -11,17 +10,15 @@ import {Observable} from 'rxjs/Observable';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  result: Observable<string>;
+  advertisements: Observable<Advertisement[]>;
 
   isAuthenticated = false;
 
-  constructor(private http: Http) {
+  constructor(private advertisementService: AdvertisementService) {
 
   }
 
   ngOnInit(): void {
-    this.result = this.http.get(environment.apiUrl).map(
-      (res) => res.text()
-    );
+    this.advertisements = this.advertisementService.listAll();
   }
 }

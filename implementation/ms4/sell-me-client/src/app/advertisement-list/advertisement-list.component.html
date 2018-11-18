@@ -1,0 +1,3 @@
+<div class="list-group" *ngIf="advertisements.length > 0">
+  <button *ngFor="let advertisement of advertisements" type="button" class="list-group-item list-group-item-action">{{advertisement.subject}}</button>
+</div>
