@@ -10,22 +10,46 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * Controller class to handle all requests from the client.
+ * Following paths are available:
+ *            api/advertisements
+ *            api/advertisements/{id}
+ * Following paths will be available:
+ *            api/{user_id}/advertisements
+ *            api/{user_id}/advertisements/{id}
+ *            api/{user_id}/create
+ *            api/{user_id}/update/{id}
+ *            api/{user_id}/delete/{id}
+ */
 @RestController
 public class MS2Controller {
 
   private IRepository inMemoryRepository;
   private Gson gson;
 
+  /**
+   * root URI
+   * @return test data
+   */
   @RequestMapping("/")
   public String index() {
     return "Privet Hamlet ti voobsche Krutoi!";
   }
 
+  /**
+   * API URI
+   * @return message about the service
+   */
   @RequestMapping("/api")
   public String api() {
-    return "Api for Sellme application";
+    return "API for advertisement application";
   }
 
+  /**
+   * /api/advertisements URI to get all the advertisements as response in JSON format
+   * @return JSON list of advertisements objects
+   */
   @RequestMapping(value = "/api/advertisements", method = RequestMethod.GET, produces = "application/json")
   public String getAdvertisements() {
     inMemoryRepository = new InMemoryRepository( new ArrayList<>() );
@@ -41,6 +65,12 @@ public class MS2Controller {
     return gson.toJson(inMemoryRepository.getAdvertisements());
   }
 
+  /**
+   * /api/advertisements/{id} URI to get specific advertisement as response in JSON format
+   * @param id unique id of one specific advertisement
+   * @return one specific advertisement object as JSON
+   */
+  // TODO add constraints, if object is available and error messages
   @RequestMapping(value = "/api/advertisements/{id}", method = RequestMethod.GET, produces = "application/json")
   public String getAdvertisementById (@PathVariable("id") int id)
   {

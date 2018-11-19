@@ -1,7 +1,12 @@
 package com.dse.ms2.model;
 
+/**
+ * Class to create advertisement objects. Each user can have one or more of these objects.
+ * They all will have unique id.
+ */
 public class Advertisement {
 
+  // TODO make id unique
   private int id;
   private int userId;
   private String subject;
@@ -9,6 +14,15 @@ public class Advertisement {
   private String description;
   private String contactInfo;
 
+  /**
+   * Constructor for Advertisement objects
+   * @param id unique id of the advertisement
+   * @param userId user id, who created the advertisement
+   * @param subject main tags/naming of the advertisement
+   * @param price price of advertisement
+   * @param description more precise description of the advertisement
+   * @param contactInfo contact details of the seller
+   */
   public Advertisement(int id, int userId, String subject, int price, String description,
       String contactInfo) {
     this.id = id;
