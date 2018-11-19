@@ -4,9 +4,17 @@ import com.authentification.model.User;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Class InMemoryRepository
+ */
+
 public class InMemoryRepository implements IRepository {
   private List<User> users;
   private static InMemoryRepository instance = null;
+
+  /**
+   * Class Constructor
+   */
 
   InMemoryRepository() {
     User hamlet = new User(1, "hamlet@gmail.com", "qwerty", "Hamlet Mkrtchyan");
@@ -17,6 +25,12 @@ public class InMemoryRepository implements IRepository {
 
   }
 
+  /**
+   * Filter elements in list
+   * @param username
+   * @param password
+   * @return one objekt when exist
+   */
   public User retrieveUser(String username, String password) {
     User user  = this.users.stream()
         .filter(u -> u.getEmail().equals(username))
@@ -29,6 +43,11 @@ public class InMemoryRepository implements IRepository {
 
     return user;
   }
+
+  /**
+   *  createt objekt wenn not exist
+   * @return created objekt
+   */
 
   public static InMemoryRepository getRepository() {
     if (instance == null) {

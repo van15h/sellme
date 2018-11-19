@@ -3,9 +3,12 @@ package com.authentification.controller;
 import com.authentification.authservice.IRepository;
 import com.authentification.authservice.InMemoryRepository;
 import com.authentification.model.User;
-import java.util.List;
-import javax.persistence.criteria.CriteriaBuilder.In;
 import org.springframework.web.bind.annotation.*;
+
+
+/**
+ * Class AuthController
+ */
 
 @RestController
 public class AuthController {
@@ -14,6 +17,10 @@ public class AuthController {
 			params = { "username", "password"},
 			method = RequestMethod.GET
 	)
+
+	/**
+	 * Class method that return name
+	 */
 	@ResponseBody
 	public String hello(@RequestParam(value="name") String name) {
 
@@ -23,6 +30,10 @@ public class AuthController {
 	@RequestMapping(
 			value = "/login"
 	)
+
+	/**
+	 * Class method that return user name
+	 */
 	@ResponseBody
 	public String login(
 			@RequestParam(value="username") String username,

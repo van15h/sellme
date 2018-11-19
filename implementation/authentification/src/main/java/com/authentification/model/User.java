@@ -5,12 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
-
-
+/**
+ * Entity class user
+ */
 @Entity
 @Table(name="users")
-
 public class User {
 	
 	@Id
@@ -22,8 +21,10 @@ public class User {
 	private String password;
 	@Column(name="name")
 	private String name;
-	
 
+	/**
+	 * Class constructor
+	 */
 		
 	public User()
 	{
@@ -39,6 +40,10 @@ public class User {
 		this.name = name;
 	}
 
+	/**
+	 *  Return an id of user
+	 * @return - user id
+	 */
 	public int getUser_id() {
 		return user_id;
 	}
