@@ -19,7 +19,7 @@ public class InMemoryRepository implements IRepository {
   InMemoryRepository() {
     User hamlet = new User(1, "hamlet@gmail.com", "qwerty", "Hamlet Mkrtchyan");
     User ivan = new User(2, "ivan@gmail.com", "qwerty", "Ivan Varabyeu");
-    User tornike = new User(3, "genacvale@gmail.com", "qwerty", "Tornike Khachidze");
+    User tornike = new User(3, "tornike@gmail.com", "qwerty", "Tornike Khachidze");
 
     this.users = Arrays.asList(hamlet, ivan, tornike);
 
@@ -31,14 +31,14 @@ public class InMemoryRepository implements IRepository {
    * @param password
    * @return one objekt when exist
    */
-  public User retrieveUser(String username, String password) {
+  public User retrieveUser(String username, String password) throws Exception {
     User user  = this.users.stream()
         .filter(u -> u.getEmail().equals(username))
         .findFirst()
         .orElse(null);
 
     if (user == null || !user.getPassword().equals(password)) {
-      return null;
+      throw new Exception("User not found");
     }
 
     return user;
@@ -56,7 +56,6 @@ public class InMemoryRepository implements IRepository {
 
     return instance;
   }
-
 
 }
 
