@@ -41,6 +41,11 @@ public class InMemoryTokenStorange implements ITokenStorange {
     return activeToken;
   }
 
+  @Override
+  public boolean isTokenActive(String token) {
+    return this.activeTokens.stream().anyMatch(t -> t.getValue().equals(token) && t.isValid());
+  }
+
 
   private String generateToken(User user) {
 

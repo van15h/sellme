@@ -7,6 +7,7 @@ import com.authentification.model.User;
 import com.authentification.token.ITokenStorange;
 import com.authentification.token.InMemoryTokenStorange;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,13 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AuthController {
-	@RequestMapping(
-			value = "/login"
-	)
-
 	/**
 	 * Class method that return user name
 	 */
+	@RequestMapping(
+			value = "/login"
+	)
 	@ResponseBody
 	public ResponseEntity<String> login(
 			@RequestParam(value="username") String username,
@@ -45,6 +45,17 @@ public class AuthController {
 		catch (Exception e ){
 			return ResponseEntity.status(404).body(e.getMessage());
 		}
+
+	}
+
+	@RequestMapping(
+			value = "/token/{value}"
+	)
+	@ResponseBody
+	public boolean token(
+			@PathVariable("value") String value) {
+		ITokenStorange tokenStorange = InMemoryTokenStorange.getStorage();
+		return tokenStorange.isTokenActive(value);
 
 	}
 }
