@@ -1,14 +1,17 @@
 package com.dse.ms2.service;
 
 import com.dse.ms2.model.Advertisement;
+import com.dse.ms2.model.Environment;
 import com.dse.ms2.model.IRepository;
 import com.dse.ms2.model.InMemoryRepository;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Controller class to handle all requests from the client.
@@ -18,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Following paths will be available:
  *            api/{user_id}/advertisements
  *            api/{user_id}/advertisements/{id}
- *            api/{user_id}/create
+ *            api/advertisements/create
  *            api/{user_id}/update/{id}
  *            api/{user_id}/delete/{id}
  */
@@ -27,6 +30,11 @@ public class MS2Controller {
 
   private IRepository inMemoryRepository;
   private Gson gson;
+
+  public MS2Controller(){
+    this.inMemoryRepository = new InMemoryRepository( new ArrayList<>() );
+    this.gson = new Gson();
+  }
 
   /**
    * root URI
@@ -52,9 +60,6 @@ public class MS2Controller {
    */
   @RequestMapping(value = "/api/advertisements", method = RequestMethod.GET, produces = "application/json")
   public String getAdvertisements() {
-    inMemoryRepository = new InMemoryRepository( new ArrayList<>() );
-    gson = new Gson();
-
     Advertisement a1 = new Advertisement(0,2, "first",
         50, "computer nice", "tel. 473823748");
     Advertisement a2 = new Advertisement(1,2, "second",
@@ -72,9 +77,31 @@ public class MS2Controller {
    */
   // TODO add constraints, if object is available and error messages
   @RequestMapping(value = "/api/advertisements/{id}", method = RequestMethod.GET, produces = "application/json")
-  public String getAdvertisementById (@PathVariable("id") int id)
+  public String getAdvertisementById (
+      @PathVariable("id") int id
+      )
   {
     return gson.toJson(inMemoryRepository.getAdvertisements().get(id));
+  }
+
+  @RequestMapping(value = "/api/advertisements/create", method = RequestMethod.POST)
+  public String createAdvertisement (
+      @RequestParam(value = "userId") int userId,
+      @RequestParam(value = "token") String token
+      )
+  {
+    RestTemplate rt = new RestTemplate();
+    boolean isValid = rt.getForObject(Environment.MS1+"/token/" + token, Boolean.class);
+
+    if (isValid) {
+      Advertisement a3 = new Advertisement(7,userId, "second",
+        50, "computer nice", "tel. 473823748");
+      inMemoryRepository.createAdvertisement(a3);
+    }
+
+
+
+    return null;
   }
 
   public boolean checkToken(String token){return true;}
