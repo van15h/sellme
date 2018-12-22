@@ -1,55 +1,15 @@
 package com.authentification.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-/**
- * Entity class user
- */
-@Entity
-@Table(name="users")
 public class User {
-	
-	@Id
-	@Column(name="user_id")
-	private int user_id;
-	@Column(name="email")
 	private String email;
-	@Column(name="password")
 	private String password;
-	@Column(name="name")
 	private String name;
 
-	/**
-	 * Class constructor
-	 */
-		
-	public User()
+	public User(String email, String password, String name)
 	{
-	  super();
-	}
-
-	public User(int user_id, String email, String password, String name)
-	{
-		super();
-		this.user_id = user_id;
 		this.email = email;
 		this.password = password;
 		this.name = name;
-	}
-
-	/**
-	 *  Return an id of user
-	 * @return - user id
-	 */
-	public int getUser_id() {
-		return user_id;
-	}
-
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
 	}
 
 	public String getEmail() {

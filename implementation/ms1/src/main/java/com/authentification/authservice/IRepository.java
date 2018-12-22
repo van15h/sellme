@@ -9,5 +9,5 @@ import com.authentification.model.User;
 public interface IRepository {
    public User retrieveUser(String username, String password) throws Exception;
 
- //  public void adduser(User user);
+   public User addUser(User user) throws Exception;
 }

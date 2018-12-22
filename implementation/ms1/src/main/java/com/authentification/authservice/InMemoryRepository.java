@@ -1,6 +1,7 @@
 package com.authentification.authservice;
 
 import com.authentification.model.User;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,12 +18,13 @@ public class InMemoryRepository implements IRepository {
    */
 
   InMemoryRepository() {
-    User hamlet = new User(1, "hamlet@gmail.com", "qwerty", "Hamlet Mkrtchyan");
-    User ivan = new User(2, "ivan@gmail.com", "qwerty", "Ivan Varabyeu");
-    User tornike = new User(3, "tornike@gmail.com", "qwerty", "Tornike Khachidze");
+    this.users = new ArrayList<>();
 
-    this.users = Arrays.asList(hamlet, ivan, tornike);
+    User hamlet = new User("hamlet@gmail.com", "qwerty", "Hamlet Mkrtchyan");
+    User ivan = new User("ivan@gmail.com", "qwerty", "Ivan Varabyeu");
+    User tornike = new User("tornike@gmail.com", "qwerty", "Tornike Khachidze");
 
+    this.users.addAll(Arrays.asList(hamlet, ivan, tornike));
   }
 
   /**
@@ -41,6 +43,21 @@ public class InMemoryRepository implements IRepository {
       throw new Exception("User not found");
     }
 
+    return user;
+  }
+
+
+  public User addUser(User user) throws Exception {
+    User reguser  = this.users.stream()
+        .filter(u -> u.getEmail().equals(user.getEmail()))
+        .findFirst()
+        .orElse(null);
+
+    if (reguser != null){
+      throw new Exception(String.format("User with email %s already exists", reguser.getEmail()));
+    }
+
+    this.users.add(user);
     return user;
   }
 
