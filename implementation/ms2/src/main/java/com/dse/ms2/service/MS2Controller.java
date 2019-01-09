@@ -60,9 +60,9 @@ public class MS2Controller {
    */
   @RequestMapping(value = "/api/advertisements", method = RequestMethod.GET, produces = "application/json")
   public String getAdvertisements() {
-    Advertisement a1 = new Advertisement(0,2, "first",
+    Advertisement a1 = new Advertisement(2, "first",
         50, "computer nice", "tel. 473823748");
-    Advertisement a2 = new Advertisement(1,2, "second",
+    Advertisement a2 = new Advertisement(2, "second",
         50, "computer nice", "tel. 473823748");
 
     inMemoryRepository.createAdvertisement(a1);
@@ -94,12 +94,10 @@ public class MS2Controller {
     boolean isValid = rt.getForObject(Environment.MS1+"/token/" + token, Boolean.class);
 
     if (isValid) {
-      Advertisement a3 = new Advertisement(7,userId, "second",
+      Advertisement a3 = new Advertisement(userId, "second",
         50, "computer nice", "tel. 473823748");
       inMemoryRepository.createAdvertisement(a3);
     }
-
-
 
     return null;
   }

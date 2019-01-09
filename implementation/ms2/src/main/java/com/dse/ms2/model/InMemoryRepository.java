@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class InMemoryRepository implements IRepository {
 
+  public static int currentAdvId = 0;
+
   private List<Advertisement> advertisements;
 
   /**
