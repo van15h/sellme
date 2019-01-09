@@ -51,8 +51,10 @@ public class InMemoryRepository implements IRepository {
   @Override
   public void deleteAdvertisement(int id) {
     for (Advertisement adv: advertisements) {
-      if (adv.getId() == id)
+      if (adv.getId() == id) {
         advertisements.remove(adv);
+        break;
+      }
     }
   }
 
@@ -72,9 +74,11 @@ public class InMemoryRepository implements IRepository {
    */
   @Override
   public Advertisement getAdvertisementById(int id) {
-    for (Advertisement adv: advertisements ) {
-      if (adv.getId() == id)
+    for (Advertisement adv:
+        advertisements ) {
+      if (adv.getId() == id) {
         return adv;
+      }
     }
     return null;
   }
@@ -82,11 +86,27 @@ public class InMemoryRepository implements IRepository {
   @Override
   public List<Advertisement> getUserAdvertisements(int userId) {
     List<Advertisement> userAdvertisements = new ArrayList<>();
-    for (Advertisement adv: advertisements) {
-      if (adv.getUserId() == userId)
+    for (Advertisement adv:
+        advertisements) {
+      if (adv.getUserId() == userId) {
         userAdvertisements.add(adv);
+      }
     }
     return userAdvertisements;
+  }
+
+  @Override
+  public void updateAdvertisement(Advertisement update) {
+    for (Advertisement adv :
+        advertisements) {
+      if (adv.getId() == update.getId()) {
+        adv.setSubject(update.getSubject());
+        adv.setDescription(update.getDescription());
+        adv.setPrice(update.getPrice());
+        adv.setContactInfo(update.getContactInfo());
+        break;
+      }
+    }
   }
 
 

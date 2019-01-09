@@ -6,24 +6,26 @@ import com.dse.ms2.model.IRepository;
 import com.dse.ms2.model.InMemoryRepository;
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * Controller class to handle all requests from the client.
- * Following paths are available:
- *            api/advertisements
- *            api/advertisements/{id}
- * Following paths will be available:
- *            api/{user_id}/advertisements
- *            api/{user_id}/advertisements/{id}
- *            api/advertisements/create
- *            api/{user_id}/update/{id}
- *            api/{user_id}/delete/{id}
+ * Following endpoints are available:
+ *            api/advertisements - list all advertisements
+ *            api/advertisements/{id} - show specific advertisement
+ *            api/{user_id} - list all advertisements of logged in user
+ *            api/{user_id}/advertisements/{id} - list specific advertisement of logged in user
+ *            api/create - user creates advertisement
+ *            api/update/{id} - user updates advertisement
+ *            api/delete/{id} - user delete advertisement
  */
 @RestController
 public class MS2Controller {
@@ -44,7 +46,7 @@ public class MS2Controller {
 
   /**
    * root URI
-   * @return test data
+   * @return where to find the app
    */
   @RequestMapping("/")
   public String index() {
@@ -53,11 +55,11 @@ public class MS2Controller {
 
   /**
    * API URI
-   * @return message about the service
+   * @return message about API
    */
   @RequestMapping("/api")
   public String api() {
-    return "API for advertisement application";
+    return "API Version 1 for advertisement application. please proceed to http://10.101.104.9:8080/api/advertisements";
   }
 
   /**
@@ -80,33 +82,61 @@ public class MS2Controller {
       @PathVariable("id") int id
       )
   {
-    return gson.toJson(inMemoryRepository.getAdvertisements().get(id));
+    return gson.toJson(inMemoryRepository.getAdvertisementById(id));
   }
 
-  @RequestMapping(value = "/api/advertisements/create", method = RequestMethod.POST)
-  public String createAdvertisement (
+  @RequestMapping(value = "/api/create", method = RequestMethod.POST)
+  public @ResponseBody ResponseEntity createAdvertisement (
       @RequestParam(value = "userId") int userId,
       @RequestParam(value = "token") String token
       )
   {
-
     if (isValid(token)) {
       Advertisement a3 = new Advertisement(userId, "second",
         50, "computer nice", "tel. 473823748");
       inMemoryRepository.createAdvertisement(a3);
+      return new ResponseEntity(HttpStatus.OK);
     }
-
-    return null;
+    return new ResponseEntity(HttpStatus.UNAUTHORIZED);
   }
 
-  public boolean isValid(String token){
+  private boolean isValid(String token){
     RestTemplate rt = new RestTemplate();
-    try {
-      return rt.getForObject(Environment.MS1+"/token/" + token, Boolean.class);
-    } catch (NullPointerException e) {
+    return rt.getForObject(Environment.MS1+"/token/" + token, Boolean.class);
+  }
 
+  private boolean userHasAdvertisement(int id){
+    for (Advertisement adv:
+    inMemoryRepository.getAdvertisements()) {
+      if (adv.getId() == id)
+        return true;
     }
     return false;
+  }
+
+  @RequestMapping(value = "/api/delete/{id}", method = RequestMethod.DELETE)
+  public @ResponseBody ResponseEntity deleteAdvertisement (
+      @PathVariable("id") int id,
+      @RequestParam(value = "token") String token
+  )
+  {
+    if (isValid(token)) {
+      if (userHasAdvertisement(id)) {
+        inMemoryRepository.deleteAdvertisement(id);
+        return new ResponseEntity(HttpStatus.OK);
+      }
+      return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+  }
+
+  //TODO
+  @RequestMapping(value = "/api/update/{id}", method = RequestMethod.PUT)
+  public String updateAdvertisement (
+      @PathVariable("id") int id
+  )
+  {
+    return gson.toJson(inMemoryRepository.getAdvertisementById(id));
   }
 
 }

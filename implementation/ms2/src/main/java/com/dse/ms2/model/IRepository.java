@@ -36,4 +36,6 @@ public interface IRepository {
 
   List<Advertisement> getUserAdvertisements(int userId);
 
+  void updateAdvertisement(Advertisement advertisement);
+
 }
