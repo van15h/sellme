@@ -32,7 +32,7 @@ public class MS2Controller {
   private Gson gson;
 
   public MS2Controller(){
-    this.inMemoryRepository = new InMemoryRepository( new ArrayList<>() );
+    this.inMemoryRepository = InMemoryRepository.getInstance( new ArrayList<>() );
     this.gson = new Gson();
   }
 
@@ -102,6 +102,9 @@ public class MS2Controller {
     return null;
   }
 
-  public boolean checkToken(String token){return true;}
+  public boolean isValid(String token){
+    RestTemplate rt = new RestTemplate();
+    return rt.getForObject(Environment.MS1+"/token/" + token, Boolean.class);
+  }
 
 }

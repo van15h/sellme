@@ -11,18 +11,27 @@ import java.util.List;
 public class InMemoryRepository implements IRepository {
 
   public static int currentAdvId = 0;
-
   private List<Advertisement> advertisements;
+
+  // singleton pattern
+  private static InMemoryRepository instance = null;
 
   /**
    * Singleton pattern used.
    * @param advertisements list to instantiate InMemoryRepository
    */
-  public InMemoryRepository(List<Advertisement> advertisements) {
+  private InMemoryRepository(List<Advertisement> advertisements) {
     this.advertisements = advertisements;
     if (this.advertisements == null) {
       this.advertisements = new ArrayList<>();
     }
+  }
+
+  public static InMemoryRepository getInstance(List<Advertisement> advertisements) {
+    if(instance == null) {
+      instance = new InMemoryRepository(advertisements);
+    }
+    return instance;
   }
 
   /**
