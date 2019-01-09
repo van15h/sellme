@@ -34,6 +34,12 @@ public class MS2Controller {
   public MS2Controller(){
     this.inMemoryRepository = InMemoryRepository.getInstance( new ArrayList<>() );
     this.gson = new Gson();
+    Advertisement a1 = new Advertisement(2, "first",
+        50, "computer nice", "tel. 473823748");
+    Advertisement a2 = new Advertisement(2, "second",
+        50, "computer nice", "tel. 473823748");
+    inMemoryRepository.createAdvertisement(a1);
+    inMemoryRepository.createAdvertisement(a2);
   }
 
   /**
@@ -42,7 +48,7 @@ public class MS2Controller {
    */
   @RequestMapping("/")
   public String index() {
-    return "Privet Hamlet ti voobsche Krutoi!";
+    return "Welcome to sellme! please proceed to http://10.101.104.9:8080/api/advertisements";
   }
 
   /**
@@ -60,13 +66,6 @@ public class MS2Controller {
    */
   @RequestMapping(value = "/api/advertisements", method = RequestMethod.GET, produces = "application/json")
   public String getAdvertisements() {
-    Advertisement a1 = new Advertisement(2, "first",
-        50, "computer nice", "tel. 473823748");
-    Advertisement a2 = new Advertisement(2, "second",
-        50, "computer nice", "tel. 473823748");
-
-    inMemoryRepository.createAdvertisement(a1);
-    inMemoryRepository.createAdvertisement(a2);
     return gson.toJson(inMemoryRepository.getAdvertisements());
   }
 
@@ -90,10 +89,8 @@ public class MS2Controller {
       @RequestParam(value = "token") String token
       )
   {
-    RestTemplate rt = new RestTemplate();
-    boolean isValid = rt.getForObject(Environment.MS1+"/token/" + token, Boolean.class);
 
-    if (isValid) {
+    if (isValid(token)) {
       Advertisement a3 = new Advertisement(userId, "second",
         50, "computer nice", "tel. 473823748");
       inMemoryRepository.createAdvertisement(a3);
@@ -104,7 +101,12 @@ public class MS2Controller {
 
   public boolean isValid(String token){
     RestTemplate rt = new RestTemplate();
-    return rt.getForObject(Environment.MS1+"/token/" + token, Boolean.class);
+    try {
+      return rt.getForObject(Environment.MS1+"/token/" + token, Boolean.class);
+    } catch (NullPointerException e) {
+
+    }
+    return false;
   }
 
 }

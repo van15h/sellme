@@ -46,11 +46,14 @@ public class InMemoryRepository implements IRepository {
 
   /**
    * Delete user specific advertisement by id.
-   * @param advId unique id of advertisement
+   * @param id unique id of advertisement
    */
   @Override
-  public void deleteAdvertisement(int advId) {
-
+  public void deleteAdvertisement(int id) {
+    for (Advertisement adv: advertisements) {
+      if (adv.getId() == id)
+        advertisements.remove(adv);
+    }
   }
 
   /**
@@ -69,7 +72,22 @@ public class InMemoryRepository implements IRepository {
    */
   @Override
   public Advertisement getAdvertisementById(int id) {
+    for (Advertisement adv: advertisements ) {
+      if (adv.getId() == id)
+        return adv;
+    }
     return null;
   }
+
+  @Override
+  public List<Advertisement> getUserAdvertisements(int userId) {
+    List<Advertisement> userAdvertisements = new ArrayList<>();
+    for (Advertisement adv: advertisements) {
+      if (adv.getUserId() == userId)
+        userAdvertisements.add(adv);
+    }
+    return userAdvertisements;
+  }
+
 
 }
