@@ -1,11 +1,9 @@
 package com.dse.ms2.service;
 
 import com.dse.ms2.model.Advertisement;
-import com.dse.ms2.model.Environment;
 import com.dse.ms2.model.IRepository;
 import com.dse.ms2.model.InMemoryRepository;
-import com.google.gson.Gson;
-import java.util.ArrayList;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Controller class to handle all requests from the client.
@@ -31,17 +28,14 @@ import org.springframework.web.client.RestTemplate;
 public class MS2Controller {
 
   private IRepository inMemoryRepository;
-  private Gson gson;
+  private MS2Utility utility;
+//  private Gson gson;
 
   public MS2Controller(){
-    this.inMemoryRepository = InMemoryRepository.getInstance( new ArrayList<>() );
-    this.gson = new Gson();
-
-    // dummy repository initialisation
-    inMemoryRepository.createAdvertisement(new Advertisement(2, "first",
-        50, "computer nice", "tel. 473823748"));
-    inMemoryRepository.createAdvertisement(new Advertisement(1, "second",
-        50, "computer nice", "tel. 473823748"));
+    this.inMemoryRepository = InMemoryRepository.getInstance();
+    this.utility = new MS2Utility();
+    this.utility.intializeRepository();
+//    this.gson = new Gson();
   }
 
   /**
@@ -50,7 +44,7 @@ public class MS2Controller {
    */
   @RequestMapping("/")
   public String index() {
-    return "Welcome to sellme! please proceed to http://10.101.104.9:8080/api/advertisements";
+    return "Welcome to sellme! \n please proceed to http://10.101.104.9:8080/api/advertisements";
   }
 
   /**
@@ -59,16 +53,16 @@ public class MS2Controller {
    */
   @RequestMapping("/api")
   public String api() {
-    return "API Version 1 for advertisement application. please proceed to http://10.101.104.9:8080/api/advertisements";
+    return "API Version 1 for advertisement application. \n please proceed to http://10.101.104.9:8080/api/advertisements";
   }
 
   /**
    * /api/advertisements URI to get all the advertisements as response in JSON format
    * @return JSON list of advertisements objects
    */
-  @RequestMapping(value = "/api/advertisements", method = RequestMethod.GET, produces = "application/json")
-  public String getAdvertisements() {
-    return gson.toJson(inMemoryRepository.getAdvertisements());
+  @RequestMapping(value = "/api/advertisements", method = RequestMethod.GET)
+  public List<Advertisement> getAdvertisements() {
+    return inMemoryRepository.getAdvertisements();
   }
 
   /**
@@ -76,28 +70,22 @@ public class MS2Controller {
    * @param id unique id of one specific advertisement
    * @return one specific advertisement object as JSON
    */
-  // TODO add constraints, if object is available and error messages
-  @RequestMapping(value = "/api/advertisements/{id}", method = RequestMethod.GET, produces = "application/json")
-  public String getAdvertisementById (
-      @PathVariable("id") int id
-      )
-  {
-    return gson.toJson(inMemoryRepository.getAdvertisementById(id));
+  @RequestMapping(value = "/api/advertisements/{id}", method = RequestMethod.GET)
+  public Advertisement getAdvertisementById ( @PathVariable("id") int id ) {
+    return inMemoryRepository.getAdvertisementById(id);
   }
 
-  @RequestMapping(value = "/api/user{user_id}/advertisements", method = RequestMethod.GET, produces = "application/json")
-  public String getAdvertisements(
-      @PathVariable("userId") int userId
-  ) {
-    return gson.toJson(inMemoryRepository.getUserAdvertisements(userId));
+  @RequestMapping(value = "/api/user{user_id}/advertisements", method = RequestMethod.GET)
+  public List<Advertisement> getAdvertisements( @PathVariable("user_id") int userId ) {
+    return inMemoryRepository.getUserAdvertisements(userId);
   }
 
   /**
    * /api/create URI to create advertisement for valid user
-   * @param userId
-   * @param token
-   * @param advertisement
-   * @return
+   * @param userId user id
+   * @param token user token to check session
+   * @param advertisement object to create
+   * @return status code of the operation
    */
   @RequestMapping(value = "/api/create", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity createAdvertisement (
@@ -106,30 +94,42 @@ public class MS2Controller {
       @RequestBody Advertisement advertisement
       )
   {
-    if (isValid(token)) {
-      //Advertisement a3 = new Advertisement(userId, "second", 50, "computer nice", "tel. 473823748");
+    if (utility.isValid(token)) {
       inMemoryRepository.createAdvertisement(advertisement);
       return new ResponseEntity(HttpStatus.OK);
     }
-    return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+    return new ResponseEntity(HttpStatus.FORBIDDEN);
   }
 
+  /**
+   * /api/delete/{id} URI to delete custom advertisement
+   * @param id unique id if advertisement
+   * @param token user token to check session time
+   * @return status codes of the operation
+   */
   @RequestMapping(value = "/api/delete/{id}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity deleteAdvertisement (
       @PathVariable("id") int id,
       @RequestParam(value = "token") String token
   )
   {
-    if (isValid(token)) {
-      if (userHasAdvertisement(id)) {
+    if (utility.isValid(token)) {
+      if (utility.userHasAdvertisement(id)) {
         inMemoryRepository.deleteAdvertisement(id);
         return new ResponseEntity(HttpStatus.OK);
       }
       return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
-    return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+    return new ResponseEntity(HttpStatus.FORBIDDEN);
   }
 
+  /**
+   * /api/update/{id} URI for updating advertisement
+   * @param id of advertisement
+   * @param token of user to check session time
+   * @param advertisement object for updating existing one
+   * @return status code of the operation
+   */
   @RequestMapping(value = "/api/update/{id}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity updateAdvertisement (
       @PathVariable("id") int id,
@@ -137,28 +137,14 @@ public class MS2Controller {
       @RequestBody Advertisement advertisement
   )
   {
-    if (isValid(token)) {
-      if (userHasAdvertisement(id)) {
+    if (utility.isValid(token)) {
+      if (utility.userHasAdvertisement(id)) {
         inMemoryRepository.updateAdvertisement(advertisement);
         return new ResponseEntity(HttpStatus.OK);
       }
       return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
-    return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-  }
-
-  private boolean isValid(String token){
-    RestTemplate rt = new RestTemplate();
-    return rt.getForObject(Environment.MS1+"/token/" + token, Boolean.class);
-  }
-
-  private boolean userHasAdvertisement(int id){
-    for (Advertisement adv:
-        inMemoryRepository.getAdvertisements()) {
-      if (adv.getId() == id)
-        return true;
-    }
-    return false;
+    return new ResponseEntity(HttpStatus.FORBIDDEN);
   }
 
 }

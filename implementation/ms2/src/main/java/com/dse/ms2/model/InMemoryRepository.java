@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class InMemoryRepository implements IRepository {
 
-  public static int currentAdvId = 0;
+  static int currentAdvId = 0;
   private List<Advertisement> advertisements;
 
   // singleton pattern
@@ -27,9 +27,9 @@ public class InMemoryRepository implements IRepository {
     }
   }
 
-  public static InMemoryRepository getInstance(List<Advertisement> advertisements) {
+  public static InMemoryRepository getInstance() {
     if(instance == null) {
-      instance = new InMemoryRepository(advertisements);
+      instance = new InMemoryRepository(new ArrayList<>());
     }
     return instance;
   }
