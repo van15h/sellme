@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * Class to create advertisement objects. Each user can have one or more of these objects.
  * They all will have unique id.
@@ -7,24 +9,27 @@ package model;
 public class Advertisement {
 
     private int id;
+    @Expose
     private int userId;
+    @Expose
     private String subject;
+    @Expose
     private int price;
+    @Expose
     private String description;
+    @Expose
     private String contactInfo;
 
     /**
      * Constructor for Advertisement objects
-     * @param id id of advertisement object
      * @param userId user id, who created the advertisement
      * @param subject main tags/naming of the advertisement
      * @param price price of advertisement
      * @param description more precise description of the advertisement
      * @param contactInfo contact details of the seller
      */
-    public Advertisement(int id, int userId, String subject, int price, String description,
+    public Advertisement(int userId, String subject, int price, String description,
                          String contactInfo) {
-        this.id = id;
         this.userId = userId;
         this.subject = subject;
         this.price = price;
