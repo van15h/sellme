@@ -87,7 +87,7 @@ public class MS2Controller {
    * @param advertisement object to create
    * @return status code of the operation
    */
-  @RequestMapping(value = "/api/create", method = RequestMethod.POST)
+  @RequestMapping(value = "/api/create", method = RequestMethod.POST, consumes = "application/json")
   public @ResponseBody ResponseEntity createAdvertisement (
       @RequestParam(value = "userId") int userId,
       @RequestParam(value = "token") String token,
