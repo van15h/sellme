@@ -8,7 +8,8 @@ import {LoginComponent} from './login/login.component';
 import {CommonModule} from '@angular/common';
 import {AuthenticationService} from './authentication.service';
 import {AdvertisementService} from './advertisement.service';
-import { AdvertisementListComponent } from './advertisement-list/advertisement-list.component';
+import {AdvertisementListComponent} from './advertisement-list/advertisement-list.component';
+import {TestService} from './services/test.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AdvertisementListComponent } from './advertisement-list/advertisement-l
   ],
   providers: [
     AuthenticationService,
-    AdvertisementService
+    AdvertisementService,
+    TestService
   ],
   bootstrap: [AppComponent]
 })
