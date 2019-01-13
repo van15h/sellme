@@ -13,6 +13,9 @@ public class Advertisement {
   private String description;
   private String contactInfo;
 
+  //used for ms4 to deserialize advertisement correctly
+  Advertisement (){}
+
   /**
    * Constructor for Advertisement objects
    * @param userId user id, who created the advertisement
