@@ -95,6 +95,7 @@ public class MS2Controller {
       )
   {
     if (utility.isValid(token)) {
+      advertisement.setId(++InMemoryRepository.currentAdvId);
       inMemoryRepository.createAdvertisement(advertisement);
       return new ResponseEntity(HttpStatus.OK);
     }
