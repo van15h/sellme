@@ -2,10 +2,8 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -14,6 +12,8 @@ import org.springframework.web.client.RestTemplate;
 import com.dse.ms2.model.Advertisement;
 
 import javax.xml.ws.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -36,6 +36,33 @@ public class AdvertisementController {
                 "http://localhost:8080/api/create",
                 request,
                 ResponseEntity.class
+        );
+    }
+
+    @RequestMapping("/api/advertisements")
+    public List<Advertisement> fetchAll() {
+        List<Advertisement> advertisements = new ArrayList<>();
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<List<Advertisement>> responseEntity = rt.exchange(
+                "http://localhost:8080/api/advertisements",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Advertisement>>() {}
+        );
+
+        advertisements = responseEntity.getBody();
+
+
+        return advertisements;
+    }
+
+    @RequestMapping("/api/advertisements/{id}")
+    public Advertisement get(@PathVariable("id") int id ) {
+        RestTemplate rt = new RestTemplate();
+
+        return rt.getForObject(
+                String.format("http://localhost:8080/api/advertisements/%d", id),
+                Advertisement.class
         );
     }
 }

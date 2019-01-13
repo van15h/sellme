@@ -19,6 +19,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.advertisements = this.advertisementService.listAll();
+    this.advertisements = this.advertisementService.listAll();
   }
 }
