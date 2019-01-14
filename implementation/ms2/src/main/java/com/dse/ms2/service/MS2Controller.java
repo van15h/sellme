@@ -132,7 +132,7 @@ public class MS2Controller {
    * @param advertisement object for updating existing one
    * @return status code of the operation
    */
-  @RequestMapping(value = "/api/update/{id}", method = RequestMethod.PUT)
+  @RequestMapping(value = "/api/update/{id}", method = RequestMethod.PUT, consumes = "application/json")
   public @ResponseBody ResponseEntity updateAdvertisement (
       @PathVariable("id") int id,
       @RequestParam(value = "token") String token,
@@ -141,6 +141,7 @@ public class MS2Controller {
   {
     if (utility.isValid(token)) {
       if (utility.userHasAdvertisement(id)) {
+        advertisement.setId(id);
         inMemoryRepository.updateAdvertisement(advertisement);
         return new ResponseEntity(HttpStatus.OK);
       }
