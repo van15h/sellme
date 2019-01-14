@@ -24,18 +24,12 @@ public class AdvertisementController {
                        @RequestParam("email") String email,
                        @RequestBody model.Advertisement advertisement
     ) {
-        HttpHeaders headers = new HttpHeaders();
-
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/api/create")
                 .queryParam("userId", email)
                 .queryParam("token", token);
 
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-//        HttpEntity<String> request = new HttpEntity<>(gson.toJson(advertisement), headers);
-
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity responseEntity = restTemplate.postForEntity(
+        restTemplate.postForEntity(
                 builder.toUriString(),
                 advertisement,
                 String.class
