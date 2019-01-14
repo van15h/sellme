@@ -34,7 +34,7 @@ public interface IRepository {
    */
   Advertisement getAdvertisementById(int id);
 
-  List<Advertisement> getUserAdvertisements(int userId);
+  List<Advertisement> getUserAdvertisements(String userId);
 
   void updateAdvertisement(Advertisement advertisement);
 

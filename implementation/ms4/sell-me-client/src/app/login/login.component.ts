@@ -20,9 +20,9 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.loginForm);
     this.authenticationService.login(this.loginForm.controls.username.value, this.loginForm.controls.password.value).subscribe(
-      (res) => console.log(res)
+      (res) => console.log(res),
+      (err) => console.log(err)
     );
   }
 

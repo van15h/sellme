@@ -20,13 +20,13 @@ class MS2Utility {
     this.inMemoryRepository = InMemoryRepository.getInstance();
 
     // dummy repository initialisation
-    inMemoryRepository.createAdvertisement(new Advertisement(2, "first",
+    inMemoryRepository.createAdvertisement(new Advertisement("2", "first",
         50, "computer nice", "tel. 473823748"));
-    inMemoryRepository.createAdvertisement(new Advertisement(1, "second",
+    inMemoryRepository.createAdvertisement(new Advertisement("1", "second",
         50, "computer very nice", "tel. 36736427"));
-    inMemoryRepository.createAdvertisement(new Advertisement(2, "third",
+    inMemoryRepository.createAdvertisement(new Advertisement("2", "third",
         50, "computer bad", "tel. 473823748"));
-    inMemoryRepository.createAdvertisement(new Advertisement(1, "fourth",
+    inMemoryRepository.createAdvertisement(new Advertisement("1", "fourth",
         50, "computer old", "tel. 36736427"));
   }
 

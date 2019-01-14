@@ -7,7 +7,7 @@ package com.dse.ms2.model;
 public class Advertisement {
 
   private int id;
-  private int userId;
+  private String userId;
   private String subject;
   private int price;
   private String description;
@@ -24,7 +24,7 @@ public class Advertisement {
    * @param description more precise description of the advertisement
    * @param contactInfo contact details of the seller
    */
-  public Advertisement(int userId, String subject, int price, String description,
+  public Advertisement(String userId, String subject, int price, String description,
       String contactInfo) {
     this.id = ++InMemoryRepository.currentAdvId;
     this.userId = userId;
@@ -42,11 +42,11 @@ public class Advertisement {
     this.id = id;
   }
 
-  public int getUserId() {
+  public String getUserId() {
     return userId;
   }
 
-  public void setUserId(int userId) {
+  public void setUserId(String userId) {
     this.userId = userId;
   }
 

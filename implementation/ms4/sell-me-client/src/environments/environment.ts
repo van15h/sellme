@@ -6,5 +6,5 @@
 export const environment = {
   production: false,
   apiUrl: '/api',
-  authenticationUrl: '/hello',
+  authenticationUrl: 'http:://localhost:8011',
 };

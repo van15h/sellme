@@ -19,36 +19,41 @@ import java.util.List;
 @RestController
 @CrossOrigin
 public class AdvertisementController {
-    @RequestMapping(value = "/api/createAdv", method = RequestMethod.POST)
-    public void create() {
+    @RequestMapping(value = "/api/createAdv", method = RequestMethod.POST, produces = "application/json")
+    public void create(@RequestParam("token") String token,
+                       @RequestParam("email") String email,
+                       @RequestBody model.Advertisement advertisement
+    ) {
         HttpHeaders headers = new HttpHeaders();
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/api/create")
-                .queryParam("userId", "12")
-                .queryParam("token", "meier");
+                .queryParam("userId", email)
+                .queryParam("token", token);
 
         headers.setContentType(MediaType.APPLICATION_JSON);
-
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        model.Advertisement myAdvertisement = new model.Advertisement(12, "Meier", 123, "Hubert", "abc@gmail.com");
-        gson.toJson(myAdvertisement);
-
-        HttpEntity<String> request = new HttpEntity<>(gson.toString(), headers);
+//        HttpEntity<String> request = new HttpEntity<>(gson.toJson(advertisement), headers);
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity responseEntity = restTemplate.postForEntity(
                 builder.toUriString(),
-                myAdvertisement,
+                advertisement,
                 String.class
         );
     }
 
     @RequestMapping("/api/advertisements")
-    public List<Advertisement> fetchAll() {
+    public List<Advertisement> fetchAll(@RequestParam(value = "userId", required = false) String userId) {
         List<Advertisement> advertisements = new ArrayList<>();
+
         RestTemplate rt = new RestTemplate();
+        String url = "http://localhost:8080/api/advertisements";
+        if (null != userId) {
+            url = String.format("http://localhost:8080/api/user%s/advertisements", userId);
+        }
+
         ResponseEntity<List<Advertisement>> responseEntity = rt.exchange(
-                "http://localhost:8080/api/advertisements",
+                url,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Advertisement>>() {}

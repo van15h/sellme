@@ -10,7 +10,7 @@ public class Advertisement {
 
     private int id;
     @Expose
-    private int userId;
+    private String userId;
     @Expose
     private String subject;
     @Expose
@@ -20,6 +20,9 @@ public class Advertisement {
     @Expose
     private String contactInfo;
 
+    Advertisement() {
+
+    }
     /**
      * Constructor for Advertisement objects
      * @param userId user id, who created the advertisement
@@ -28,8 +31,9 @@ public class Advertisement {
      * @param description more precise description of the advertisement
      * @param contactInfo contact details of the seller
      */
-    public Advertisement(int userId, String subject, int price, String description,
+    public Advertisement(String userId, String subject, int price, String description,
                          String contactInfo) {
+        this();
         this.userId = userId;
         this.subject = subject;
         this.price = price;
@@ -45,11 +49,11 @@ public class Advertisement {
         this.id = id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

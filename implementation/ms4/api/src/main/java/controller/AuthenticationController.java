@@ -1,23 +1,28 @@
 package controller;
 
-import com.dse.ms2.model.Advertisement;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @CrossOrigin
 public class AuthenticationController {
     @RequestMapping("/api/login")
-    public String authenticate(@PathVariable String email, @PathVariable String password) {
-        // TODO establish connection to ms1
-        return null;
+    public String authenticate(@RequestParam("email") String email, @RequestParam("password") String password) {
+        RestTemplate restTemplate = new RestTemplate();
+        UriComponentsBuilder builder = UriComponentsBuilder.newInstance().scheme("http")
+                .host(environment.Environment.ms1)
+                .port(8011)
+                .path("/login")
+                .queryParam("username", email)
+                .queryParam("password", password);
+
+        String response = restTemplate.getForObject(
+                builder.toUriString(),
+                String.class
+        );
+
+        return response;
     }
 
     @RequestMapping("/api/token")

@@ -62,6 +62,7 @@ public class MS2Controller {
    */
   @RequestMapping(value = "/api/advertisements", method = RequestMethod.GET)
   public List<Advertisement> getAdvertisements() {
+
     return inMemoryRepository.getAdvertisements();
   }
 
@@ -76,7 +77,7 @@ public class MS2Controller {
   }
 
   @RequestMapping(value = "/api/user{user_id}/advertisements", method = RequestMethod.GET)
-  public List<Advertisement> getAdvertisements( @PathVariable("user_id") int userId ) {
+  public List<Advertisement> getAdvertisements( @PathVariable("user_id") String userId ) {
     return inMemoryRepository.getUserAdvertisements(userId);
   }
 
@@ -89,7 +90,7 @@ public class MS2Controller {
    */
   @RequestMapping(value = "/api/create", method = RequestMethod.POST, consumes = "application/json")
   public @ResponseBody ResponseEntity createAdvertisement (
-      @RequestParam(value = "userId") int userId,
+      @RequestParam(value = "userId") String userId,
       @RequestParam(value = "token") String token,
       @RequestBody Advertisement advertisement
       )

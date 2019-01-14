@@ -84,11 +84,11 @@ public class InMemoryRepository implements IRepository {
   }
 
   @Override
-  public List<Advertisement> getUserAdvertisements(int userId) {
+  public List<Advertisement> getUserAdvertisements(String userId) {
     List<Advertisement> userAdvertisements = new ArrayList<>();
     for (Advertisement adv:
         advertisements) {
-      if (adv.getUserId() == userId) {
+      if (adv.getUserId().equals(userId)) {
         userAdvertisements.add(adv);
       }
     }
